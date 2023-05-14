@@ -82,4 +82,25 @@ class SeatController extends Controller
 
         return redirect()->route('rooms.show', $roomId)->with('success', 'Seat deleted successfully.');
     }
+
+
+    public function getAvailableSeats(Room $room)
+    {
+        // Get the available seats for the room
+        $availableSeats = $room->availableSeats();
+
+        // Return the available seats as JSON
+        return response()->json(['seats' => $availableSeats]);
+    }
+
+
+    public function list(Request $request)
+    {
+        $seats = Seat::where('room_id', $request->room_id)->get();
+        $html = '<option value="">-- Select Seat --</option>';
+        foreach ($seats as $seat) {
+            $html .= '<option value="' . $seat->id . '">' . $seat->name . ' (Price: $' . $seat->price . ')</option>';
+        }
+        return $html;
+    }
 }

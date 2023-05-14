@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\SeatController;
+use App\Http\Controllers\Admin\RoomReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,20 @@ Route::get('/', function () {
  Route::get('/seats/{id}/edit', [SeatController::class, 'edit'])->name('seats.edit');
  Route::put('/seats/{id}', [SeatController::class, 'update'])->name('seats.update');
  Route::delete('/seats/{id}', [SeatController::class, 'destroy'])->name('seats.delete');
+
+
+//  Route::resource('room_reservations', RoomReservationController::class);
+  // Rooms
+  Route::get('/room_reservations', [RoomReservationController::class, 'index'])->name('room_reservations');
+  Route::get('/room_reservations/create', [RoomReservationController::class, 'create'])->name('room_reservations.create');
+  Route::post('/room_reservations/store', [RoomReservationController::class, 'store'])->name('room_reservations.store');
+  Route::post('/room_reservations/edit/{id}', [RoomReservationController::class, 'edit'])->name('room_reservations.edit');
+  Route::post('/room_reservations/update/{id}', [RoomReservationController::class, 'update'])->name('room_reservations.update');
+  Route::post('/room_reservations/delete/{id}', [RoomReservationController::class, 'delete'])->name('room_reservations.delete');
+
+
+  Route::get('/seats/available/{room}', 'SeatController@getAvailableSeats');
+
+  Route::get('/seats/list', [SeatsController::class, 'list'])->name('seats.list');
+
+

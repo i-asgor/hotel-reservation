@@ -130,14 +130,14 @@
               </p>
             </a>
           </li>
-          {{-- <li class="nav-item">
-            <a href="{{ route('seats') }}" class="nav-link">
+          <li class="nav-item">
+            <a href="{{ route('room_reservations') }}" class="nav-link">
               <i class="nav-icon fas fa-wrench"></i>
               <p>
-                Seat
+                reservations
               </p>
             </a>
-          </li> --}}
+          </li>
         
           
           
