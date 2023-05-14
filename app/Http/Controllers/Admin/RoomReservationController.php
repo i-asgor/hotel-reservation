@@ -32,11 +32,11 @@ class RoomReservationController extends Controller
         $reservation->check_out_date = $request->check_out_date;
         $reservation->guest_name = $request->guest_name;
         $reservation->guest_email = $request->guest_email;
-        dd($reservation);
+        // dd($reservation);
 
 
         $reservation->save();
-        return redirect()->route('room_reservations.show', $reservation);
+        return redirect()->route('room_reservations', $reservation);
     }
 
     public function show(RoomReservation $reservation)

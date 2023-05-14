@@ -27,24 +27,31 @@
                     <thead>
                         <tr>
                             <th>Sl</th>
-                            <th>Name</th>
-                            <th>Description </th>
-                            <th>Room Capacity</th>
-                            <th>Room Price</th>
+                            <th>Room ID</th>
+                            <th>Seat ID </th>
+                            <th>Check In Date</th>
+                            <th>Check Out Date</th>
+                            <th>Guest Name</th>
+                            <th>Guest Email</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($reservations as $reservation)
                         <tr>
-                            <td>{{($loop->index+1)+ ($reservations->currentPage() - 1)*$reservations->perPage() }}</td>
-                            
+                            <td>{{($loop->index+1)+ ($reservations->currentPage() - 1)*$reservations->perPage() }}</td>                            
 
-                            <td>{{$reservation->name}}</td> 
-                            <td>{{$reservation->description}}</td> 
+                            <td>{{$reservation->room_id}}</td> 
+                            <td>{{$reservation->seat_id}}</td> 
+                            <td>{{$reservation->check_in_date}}</td> 
+                            <td>{{$reservation->check_out_date}}</td> 
+                            <td>{{$reservation->guest_name}}</td> 
+                            <td>{{$reservation->guest_email}}</td> 
+                            <td>{{$reservation->status}}</td> 
                             <td>
-                                <a href="{{route('reservation.edit',$reservation->id)}}" class="btn btn-primary"><i class="fa fa-pen"></i></a>
-                                <a href="" class="btn btn-danger" data-href="{{route('reservation.delete',$reservation->id)}}" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash"></i></a>
+                                <a href="{{route('room_reservations.edit',$reservation->id)}}" class="btn btn-primary"><i class="fa fa-pen"></i></a>
+                                <a href="" class="btn btn-danger" data-href="{{route('room_reservations.delete',$reservation->id)}}" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                         @endforeach
