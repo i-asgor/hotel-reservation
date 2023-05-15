@@ -28,6 +28,22 @@ class Room extends Model
         return $availableSeats;
     }
 
+
+    // public function reservations()
+    // {
+    //     return $this->belongsToMany(RoomReservation::class)
+    //                 ->withPivot('price')
+    //                 ->withTimestamps();
+    // }
+
+    public function reservations()
+    {
+        return $this->belongsToMany(RoomReservation::class)
+                    ->withPivot('price')
+                    ->withTimestamps();
+    }
+
+
     protected $fillable = [
         'name',
         'description',

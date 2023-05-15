@@ -8,25 +8,26 @@
             @csrf
 
             <div class="form-group">
-                <label for="room_id">Room</label>
-                <select name="room_id" id="room_id" class="form-control">
-                    <option value="">-- Select Room --</option>
-                    @foreach($rooms as $room)
-                        <option value="{{ $room->id }}">{{ $room->name }}</option>
-                    @endforeach
+                <label for="room_id">Select Room(s)</label>
+                <select class="form-control" id="room_id" name="room_id[]" multiple>
+                @foreach($rooms as $room)
+                    <option value="{{ $room->id }}">{{ $room->name }}</option>
+                @endforeach
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="seat_id">Seat</label>
-                <select name="seat_id" id="seat_id" class="form-control" disabled>
-                    <option value="">-- Select Seat --</option>
+                <label for="seat_id">Select Seat(s)</label>
+                <select class="form-control" id="seat_id" name="seat_id[]" multiple>
+                  @foreach($seats as $seat)
+                    <option value="{{ $seat->id }}">{{ $seat->name }}</option>
+                  @endforeach
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="quantity">Quantity</label>
-                <input type="number" name="quantity" id="quantity" class="form-control" min="1" value="1">
+                <input type="number" name="quantity" id="quantity" class="form-control" min="1">
             </div>
 
             <div class="form-group">

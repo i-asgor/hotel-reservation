@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\Admin\RoomReservationController;
+use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\SeatReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,18 +42,22 @@ Route::get('/', function () {
  Route::delete('/seats/{id}', [SeatController::class, 'destroy'])->name('seats.delete');
 
 
-//  Route::resource('room_reservations', RoomReservationController::class);
   // Rooms
   Route::get('/room_reservations', [RoomReservationController::class, 'index'])->name('room_reservations');
   Route::get('/room_reservations/create', [RoomReservationController::class, 'create'])->name('room_reservations.create');
   Route::post('/room_reservations/store', [RoomReservationController::class, 'store'])->name('room_reservations.store');
-  Route::post('/room_reservations/edit/{id}', [RoomReservationController::class, 'edit'])->name('room_reservations.edit');
+  Route::get('/room_reservations/edit/{id}', [RoomReservationController::class, 'edit'])->name('room_reservations.edit');
   Route::post('/room_reservations/update/{id}', [RoomReservationController::class, 'update'])->name('room_reservations.update');
   Route::post('/room_reservations/delete/{id}', [RoomReservationController::class, 'delete'])->name('room_reservations.delete');
 
+  // Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+  // Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
 
-  Route::get('/seats/available/{room}', 'SeatController@getAvailableSeats');
+  Route::get('/seats/list', [SeatController::class, 'getSeatsByRoom'])->name('seats.list');
 
-  Route::get('/seats/list', [SeatsController::class, 'list'])->name('seats.list');
+  Route::get('/booking', [BookingController::class, 'index'])->name('booking');
+  Route::get('/booking/create', [BookingController::class, 'create'])->name('booking.create');
+  Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
+  
 
 
