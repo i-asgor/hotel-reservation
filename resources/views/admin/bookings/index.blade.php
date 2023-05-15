@@ -47,7 +47,7 @@
                     <tbody>
                         @foreach($reservations as $reservation)
                         <tr>
-                            {{-- <td>{{($loop->index+1)+ ($reservations->currentPage() - 1)*$reservations->perPage() }}</td>                             --}}
+                            <td>{{($loop->index+1)+ ($reservations->currentPage() - 1)*$reservations->perPage() }}</td>                            
 
                             <td>{{$reservation->room_id}}</td> 
                             <td>{{$reservation->seat_id}}</td> 
@@ -71,7 +71,7 @@
                     </tbody>
                 </table>
                 <div class="float-left">
-                         {{-- {{ $reservations->appends(request()->input())->links("pagination::bootstrap-4") }} --}}
+                         {{ $reservations->appends(request()->input())->links("pagination::bootstrap-4") }}
                   </div>
               </div>
           </div>

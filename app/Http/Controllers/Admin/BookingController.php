@@ -62,8 +62,13 @@ class BookingController extends Controller
 
         $reservation = new RoomReservation();
         $reservation->room_id = json_encode($validatedData['room_id']);      
-        $reservation->seat_id = json_encode($validatedData['seat_id']);      
-        $reservation->quantity = $validatedData['quantity'];
+        $reservation->seat_id = json_encode($validatedData['seat_id']);
+
+        $quantityArray = json_encode($validatedData['seat_id']);
+        $count = count(json_decode($quantityArray));     
+
+        $reservation->quantity = $count;
+        // $reservation->quantity = $validatedData['quantity'];
         // if (isset($validatedData['quantity'])) {
         //     $reservation->quantity = $validatedData['quantity'];
         // }
