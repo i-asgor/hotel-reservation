@@ -9,7 +9,12 @@
             <div class="col-sm-6">
                 <h1 class="tx-gray-800 tx-uppercase tx-bold tx-14 mg-b-10">Room Reservation List</h1>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-3">
+              <ol class="breadcrumb float-sm-right">
+                {{-- <a href="{{ route('rooms.seats.available', ['room_id' => $room->id]) }}">View available seats</a> --}}
+              </ol>
+            </div>
+            <div class="col-sm-3">
               <ol class="breadcrumb float-sm-right">
                 <a href="{{ route('booking.create') }}" class="btn btn-primary">Add Room Reservation</a>
               </ol>
@@ -42,7 +47,7 @@
                     <tbody>
                         @foreach($reservations as $reservation)
                         <tr>
-                            <td>{{($loop->index+1)+ ($reservations->currentPage() - 1)*$reservations->perPage() }}</td>                            
+                            {{-- <td>{{($loop->index+1)+ ($reservations->currentPage() - 1)*$reservations->perPage() }}</td>                             --}}
 
                             <td>{{$reservation->room_id}}</td> 
                             <td>{{$reservation->seat_id}}</td> 
@@ -66,7 +71,7 @@
                     </tbody>
                 </table>
                 <div class="float-left">
-                         {{ $reservations->appends(request()->input())->links("pagination::bootstrap-4") }}
+                         {{-- {{ $reservations->appends(request()->input())->links("pagination::bootstrap-4") }} --}}
                   </div>
               </div>
           </div>

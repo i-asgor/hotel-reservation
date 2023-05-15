@@ -9,7 +9,12 @@
             <div class="col-sm-6">
                 <h1 class="tx-gray-800 tx-uppercase tx-bold tx-14 mg-b-10">Room Reservation List</h1>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-3">
+              <ol class="breadcrumb float-sm-right">
+                <a href="{{ route('rooms.seats.available', ['room_id' => $room->id]) }}">View available seats</a>
+              </ol>
+            </div>
+            <div class="col-sm-3">
               <ol class="breadcrumb float-sm-right">
                 <a href="{{ route('room_reservations.create') }}" class="btn btn-primary">Add Room Reservation</a>
               </ol>

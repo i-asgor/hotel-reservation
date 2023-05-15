@@ -49,6 +49,11 @@ Route::get('/', function () {
   Route::get('/room_reservations/edit/{id}', [RoomReservationController::class, 'edit'])->name('room_reservations.edit');
   Route::post('/room_reservations/update/{id}', [RoomReservationController::class, 'update'])->name('room_reservations.update');
   Route::post('/room_reservations/delete/{id}', [RoomReservationController::class, 'delete'])->name('room_reservations.delete');
+//   Route::get('/rooms/{room_id}/seats/available', [RoomReservationController::class, 'getAvailableSeats'])->name('rooms.seats.available');
+    Route::get('/rooms/{room}/seats/available', [BookingController::class, 'getAvailableSeats'])->name('rooms.seats.available');
+    Route::get('/rooms/available', [RoomController::class, 'availableRooms'])->name('rooms.available');
+
+
 
   // Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
   // Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');

@@ -11,16 +11,18 @@ use App\Models\Seat;
 
 class BookingController extends Controller
 {
+    // public function index()
+    // {
+    //     $reservations = RoomReservation::latest()->paginate(10);
+    //     return view('admin.bookings.index', compact('reservations'));
+    // }
     public function index()
     {
-        // $roomIds = json_decode($reservation->room_id);
-
-        $reservations = RoomReservation::latest()->paginate(10);
-        // $rooms = Room::whereIn('id', $roomIds)->get();
-
-
+        $reservations = RoomReservation::with(['rooms', 'seats'])->get();
         return view('admin.bookings.index', compact('reservations'));
     }
+
+
     public function create()
     {
         $rooms = Room::all();
@@ -78,6 +80,7 @@ class BookingController extends Controller
 
         if (isset($validatedData['room_id']) && is_array($validatedData['room_id'])) {
             $rooms = Room::whereIn('id', $validatedData['room_id'])->get();
+            
             foreach ($rooms as $room) {
               $reservation->rooms()->attach($room->id, [
                 'price' => $room->price,
@@ -91,6 +94,8 @@ class BookingController extends Controller
               $reservation->seats()->attach($seat->id, [
                 'price' => $seat->price,
               ]);
+              
+            //   dd($reservation);
             }
           }
           
@@ -100,13 +105,42 @@ class BookingController extends Controller
 
 
 
+    // public function getAvailableSeats(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'room_id' => 'required|exists:rooms,id',
+    //     ]);
+
+    //     $room = Room::findOrFail($validatedData['room_id']);
+    //     $availableSeats = $room->seats()->whereDoesntHave('reservations', function ($query) use ($request) {
+    //         $query->where(function ($query) use ($request) {
+    //             $query->where('check_in_date', '<', $request->input('check_out_date'))
+    //                 ->where('check_out_date', '>', $request->input('check_in_date'));
+    //         })->orWhere(function ($query) use ($request) {
+    //             $query->where('check_in_date', '>=', $request->input('check_in_date'))
+    //                 ->where('check_in_date', '<', $request->input('check_out_date'));
+    //         })->orWhere(function ($query) use ($request) {
+    //             $query->where('check_out_date', '>', $request->input('check_in_date'))
+    //                 ->where('check_out_date', '<=', $request->input('check_out_date'));
+    //         });
+    //     })->get();
+
+    //     return response()->json($availableSeats);
+    // }
+
+
     public function getAvailableSeats(Request $request)
     {
         $validatedData = $request->validate([
             'room_id' => 'required|exists:rooms,id',
+            'check_in_date' => 'required|date',
+            'check_out_date' => 'required|date|after:check_in_date',
         ]);
 
         $room = Room::findOrFail($validatedData['room_id']);
+        $checkInDate = $validatedData['check_in_date'];
+        $checkOutDate = $validatedData['check_out_date'];
+
         $availableSeats = $room->seats()->whereDoesntHave('reservations', function ($query) use ($request) {
             $query->where(function ($query) use ($request) {
                 $query->where('check_in_date', '<', $request->input('check_out_date'))
@@ -120,7 +154,8 @@ class BookingController extends Controller
             });
         })->get();
 
-        return response()->json($availableSeats);
+        return view('admin.available_seats.index', compact('room', 'checkInDate', 'checkOutDate', 'availableSeats'));
     }
+
 
 }

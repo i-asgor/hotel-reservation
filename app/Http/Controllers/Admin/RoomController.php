@@ -45,4 +45,32 @@ class RoomController extends Controller
 
         return redirect()->route('rooms')->with('success', 'Room created successfully.');
     }
+
+
+    public function availableRooms(Request $request)
+{
+    $validatedData = $request->validate([
+        'check_in_date' => 'required|date',
+        'check_out_date' => 'required|date|after:check_in_date',
+    ]);
+
+    $checkInDate = $validatedData['check_in_date'];
+    $checkOutDate = $validatedData['check_out_date'];
+
+    $availableRooms = Room::whereDoesntHave('reservations', function ($query) use ($checkInDate, $checkOutDate) {
+        $query->where(function ($query) use ($checkInDate, $checkOutDate) {
+            $query->where('check_in_date', '<', $checkOutDate)
+                ->where('check_out_date', '>', $checkInDate);
+        })->orWhere(function ($query) use ($checkInDate, $checkOutDate) {
+            $query->where('check_in_date', '>=', $checkInDate)
+                ->where('check_in_date', '<', $checkOutDate);
+        })->orWhere(function ($query) use ($checkInDate, $checkOutDate) {
+            $query->where('check_out_date', '>', $checkInDate)
+                ->where('check_out_date', '<=', $checkOutDate);
+        });
+    })->get();
+
+    return view('admin.rooms.available', compact('availableRooms', 'checkInDate', 'checkOutDate'));
+}
+
 }

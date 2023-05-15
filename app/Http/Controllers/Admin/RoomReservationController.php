@@ -88,5 +88,33 @@ class RoomReservationController extends Controller
         return redirect()->route('room_reservations.index');
     }
 
+
+    public function getAvailableSeats(Request $request)
+{
+    $validatedData = $request->validate([
+        'room_id' => 'required|exists:rooms,id',
+        'check_in_date' => 'required|date',
+        'check_out_date' => 'required|date|after:check_in_date',
+    ]);
+
+    $room = Room::findOrFail($validatedData['room_id']);
+
+    $availableSeats = $room->seats()
+        ->whereDoesntHave('reservations', function ($query) use ($validatedData) {
+            $query->where(function ($query) use ($validatedData) {
+                $query->where('check_in_date', '<', $validatedData['check_out_date'])
+                    ->where('check_out_date', '>', $validatedData['check_in_date']);
+            })->orWhere(function ($query) use ($validatedData) {
+                $query->where('check_in_date', '>=', $validatedData['check_in_date'])
+                    ->where('check_in_date', '<', $validatedData['check_out_date']);
+            })->orWhere(function ($query) use ($validatedData) {
+                $query->where('check_out_date', '>', $validatedData['check_in_date'])
+                    ->where('check_out_date', '<=', $validatedData['check_out_date']);
+            });
+        })->get();
+
+    return response()->json($availableSeats);
+}
+
     
 }

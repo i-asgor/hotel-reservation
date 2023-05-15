@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('seat_reservation_id');
             $table->unsignedBigInteger('seat_id');
             $table->decimal('price', 10, 2);
+            $table->string('status')->nullable();
             $table->timestamps();
 
             $table->foreign('seat_reservation_id')->references('id')->on('seat_reservations')->onDelete('cascade');
