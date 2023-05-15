@@ -9,19 +9,21 @@
 
             <div class="form-group">
                 <label for="room_id">Select Room(s)</label>
-                <select class="form-control" id="room_id" name="room_id[]" multiple>
-                @foreach($rooms as $room)
-                    <option value="{{ $room->id }}">{{ $room->name }}</option>
-                @endforeach
+                <select class="form-control select2" id="room_id" name="room_id[]" multiple>
+                    <option value="" disabled>Select Room</option>
+                    @foreach($rooms as $room)
+                        <option value="{{ $room->id }}">{{ $room->name }}</option>
+                    @endforeach
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="seat_id">Select Seat(s)</label>
-                <select class="form-control" id="seat_id" name="seat_id[]" multiple>
-                  @foreach($seats as $seat)
-                    <option value="{{ $seat->id }}">{{ $seat->name }}</option>
-                  @endforeach
+                <select class="form-control select2" id="seat_id" name="seat_id[]" multiple>
+                    <option value="" disabled>Select Seat</option>
+                    @foreach($seats as $seat)
+                        <option value="{{ $seat->id }}">{{ $seat->name }}</option>
+                    @endforeach
                 </select>
             </div>
 

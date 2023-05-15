@@ -18,7 +18,8 @@ class BookingController extends Controller
     // }
     public function index()
     {
-        $reservations = RoomReservation::with(['rooms', 'seats'])->get();
+        // $reservations = RoomReservation::with(['rooms', 'seats'])->get();
+        $reservations = RoomReservation::latest()->paginate(10);
         return view('admin.bookings.index', compact('reservations'));
     }
 
@@ -90,6 +91,7 @@ class BookingController extends Controller
           
           if (isset($validatedData['seat_id']) && is_array($validatedData['seat_id'])) {
             $seats = Seat::whereIn('id', $validatedData['seat_id'])->get();
+            // dd($seats);
             foreach ($seats as $seat) {
               $reservation->seats()->attach($seat->id, [
                 'price' => $seat->price,

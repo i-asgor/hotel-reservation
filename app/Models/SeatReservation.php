@@ -9,7 +9,7 @@ class SeatReservation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['check_in_date', 'check_out_date', 'guest_name', 'guest_email', 'status'];
+    protected $fillable = ['check_in_date','seat_reservation_id', 'check_out_date', 'guest_name', 'guest_email', 'status','price'];
 
     
 
