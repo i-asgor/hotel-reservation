@@ -49,7 +49,7 @@
                             <td>{{$reservation->quantity}}</td> 
                             <td>
                               {{-- {{ $reservation->seats()->count() * ($reservation->room->price ?? 0) }} --}}
-                              {{ $reservation->seats()->count() * optional($reservation->room)->price }}
+                              {{-- {{ $reservation->seats()->count() * optional($reservation->room)->price }} --}}
                               {{ $reservation->room ? $reservation->room->price : 'N/A' }}
                             </td> 
                             <td>{{$reservation->check_in_date}}</td> 
