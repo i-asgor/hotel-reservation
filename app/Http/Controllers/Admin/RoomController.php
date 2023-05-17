@@ -118,6 +118,8 @@ class RoomController extends Controller
         return view('admin.rooms.check-availability', compact('room', 'startDate', 'endDate', 'isAvailable'));
     }
 
+    
+
 
 
 }

@@ -30,16 +30,6 @@ class BookingController extends Controller
     }
 
 
-    public function getSeats(Request $request)
-    {
-        $seats = Seat::where('room_id', $request->room_id)->get();
-        $output = '';
-        foreach ($seats as $seat) {
-            $output .= '<option value="' . $seat->id . '">' . $seat->seat_number . '</option>';
-        }
-        return response()->json($output);
-    }
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -102,5 +92,24 @@ class BookingController extends Controller
 
         return redirect()->route('booking')->with('success', 'Reservation created successfully!');
     }
+
+
+
+    // public function getAvailableSeats($room_id, $check_in_date, $check_out_date)
+    // {
+    //     // Query to find available seats within the specified date range for the selected room
+    //     $availableSeats = Seat::where('room_id', $room_id)
+    //         ->whereDoesntHave('reservations', function ($query) use ($check_in_date, $check_out_date) {
+    //             $query->where(function ($query) use ($check_in_date, $check_out_date) {
+    //                 $query->where('check_in_date', '<=', $check_out_date)
+    //                     ->where('check_out_date', '>=', $check_in_date);
+    //             });
+    //         })->get();
+
+    //         dd($availableSeats);
+
+    //     return response()->json($availableSeats);
+    // }
+
 
 }

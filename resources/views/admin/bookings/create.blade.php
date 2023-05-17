@@ -80,3 +80,39 @@
         });
     </script>
 @endsection
+
+
+@section('javascript')
+
+<script>
+    $(document).ready(function () {
+        $('#room_id').on('change', function () {
+            var room_id = $(this).val();
+            var check_in_date = $('#check_in_date').val();
+            var check_out_date = $('#check_out_date').val();
+
+            if (room_id && check_in_date && check_out_date) {
+                $.ajax({
+                    url: '/get-available-seats/' + room_id + '/' + check_in_date + '/' + check_out_date,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#seat_id').empty();
+                        $('#seat_id').append($('<option>').text('--Select Seat--').attr('value', ''));
+                        $.each(data, function (index, seat) {
+                            $('#seat_id').append($('<option>').text(seat.name).attr('value', seat.id));
+                        });
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            } else {
+                $('#seat_id').empty();
+                $('#seat_id').append($('<option>').text('--Select Seat--').attr('value', ''));
+            }
+        });
+    });
+</script>
+
+@endsection
