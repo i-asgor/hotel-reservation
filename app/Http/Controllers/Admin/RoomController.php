@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Room;
 use App\Models\Seat;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class RoomController extends Controller
@@ -116,6 +117,34 @@ class RoomController extends Controller
         })->exists();
         
         return view('admin.rooms.check-availability', compact('room', 'startDate', 'endDate', 'isAvailable'));
+    }
+
+
+
+    public function getRoomAvailability()
+    {
+        $rooms = Room::all();
+
+        $events = [];
+
+        foreach ($rooms as $room) {
+            // Retrieve the availability information for each room and format it as an event
+            // You can customize this logic based on how you store the availability data in your database
+
+            $availability = $room->availability; // Assuming you have a relationship to retrieve the availability
+
+            foreach ($availability as $availabilityDate) {
+                $event = [
+                    'title' => $room->name,
+                    'start' => $availabilityDate->start_date->toDateString(),
+                    'end' => $availabilityDate->end_date->toDateString(),
+                ];
+
+                $events[] = $event;
+            }
+        }
+
+        return response()->json($events);
     }
 
     

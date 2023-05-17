@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\Admin\RoomReservationController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\SeatReservationController;
+use App\Http\Controllers\Admin\CalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +89,13 @@ Route::get('/', function () {
   
 
     Route::get('/seats/by-room/{id}', [SeatController::class, 'getSeatsByRoom'])->name('seats.by.room');
+
+
+    Route::get('/calendar', [CalendarController::class, 'index'])
+    ->name('availability.events');
+
+
+
 
 
 
