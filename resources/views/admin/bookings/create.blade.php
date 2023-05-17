@@ -21,9 +21,9 @@
                 <label for="seat_id">Select Seat(s)</label>
                 <select class="form-control select2" id="seat_id" name="seat_id[]" multiple>
                     <option value="" disabled>Select Seat</option>
-                    @foreach($availableSeats as $seat)
+                    <!-- @foreach($availableSeats as $seat)
                         <option value="{{ $seat->id }}">{{ $seat->name }}</option>
-                    @endforeach
+                    @endforeach -->
                 </select>
             </div>
 
@@ -56,63 +56,58 @@
         </form>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            $('#room_id').on('change', function() {
-                var roomId = $(this).val();
-                if (roomId) {
-                    $.ajax({
-                        url: '{{ route("seats.list") }}',
-                        data: { room_id: roomId },
-                        success: function(response) {
-                            $('#seat_id').prop('disabled', false);
-                            $('#seat_id').html(response);
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            console.log('Error:', textStatus);
-                        }
-                    });
-                } else {
-                    $('#seat_id').html('<option value="">-- Select Seat --</option>');
-                    $('#seat_id').prop('disabled', true);
-                }
-            });
-        });
-    </script>
 @endsection
 
 
 @section('javascript')
 
 <script>
-    $(document).ready(function () {
-        $('#room_id').on('change', function () {
-            var room_id = $(this).val();
-            var check_in_date = $('#check_in_date').val();
-            var check_out_date = $('#check_out_date').val();
+  $(document).ready(function () {
+    var selectedSeats = {}; // Object to store selected seats for each room
 
-            if (room_id && check_in_date && check_out_date) {
+    $('#room_id').on('change', function () {
+        var roomIds = $(this).val();
+        if (roomIds && roomIds.length > 0) {
+            var seatDropdown = $('#seat_id');
+            seatDropdown.empty();
+
+            roomIds.forEach(function (roomId) {
+                // Check if any previously selected seats exist for the current room
+                var previousSeats = selectedSeats[roomId] || [];
+
                 $.ajax({
-                    url: '/get-available-seats/' + room_id + '/' + check_in_date + '/' + check_out_date,
+                    url: '{{ route("seats.by.room", ":id") }}'.replace(':id', roomId),
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {
-                        $('#seat_id').empty();
-                        $('#seat_id').append($('<option>').text('--Select Seat--').attr('value', ''));
-                        $.each(data, function (index, seat) {
-                            $('#seat_id').append($('<option>').text(seat.name).attr('value', seat.id));
+                        $.each(data, function (key, value) {
+                            var option = $('<option>').val(key).text(value);
+                            seatDropdown.append(option);
                         });
-                    },
-                    error: function (xhr) {
-                        console.log(xhr.responseText);
+
+                        // Restore previously selected seats for the current room
+                        previousSeats.forEach(function (seatId) {
+                            seatDropdown.find('option[value="' + seatId + '"]').prop('selected', true);
+                        });
                     }
                 });
-            } else {
-                $('#seat_id').empty();
-                $('#seat_id').append($('<option>').text('--Select Seat--').attr('value', ''));
-            }
-        });
+
+                // Store the selected seats for the current room
+                seatDropdown.on('change', function () {
+                    selectedSeats[roomId] = $(this).val();
+                });
+            });
+        } else {
+            $('#seat_id').empty();
+            selectedSeats = {};
+        }
     });
+});
+
+
 </script>
+
+
+
 
 @endsection

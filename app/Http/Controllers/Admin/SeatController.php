@@ -150,4 +150,15 @@ class SeatController extends Controller
     }
 
 
+    public function getSeatsByRoom($id)
+    {
+        $room = Room::findOrFail($id);
+        $seats = $room->seats()->pluck('name', 'id');
+        return $seats;
+    }
+
+
+
+
+
 }

@@ -42,6 +42,9 @@ Route::get('/', function () {
  Route::put('/seats/{id}', [SeatController::class, 'update'])->name('seats.update');
  Route::delete('/seats/{id}', [SeatController::class, 'destroy'])->name('seats.delete');
 
+ Route::get('/seats/{id}', [SeatController::class, 'show']);
+
+
 
   // Rooms Reservation
   Route::get('/room_reservations', [RoomReservationController::class, 'index'])->name('room_reservations');
@@ -83,6 +86,11 @@ Route::get('/', function () {
     Route::get('/rooms1', [RoomController::class, 'index'])->name('rooms.index');
     Route::post('/rooms/search', [RoomController::class, 'search'])->name('rooms.search');
   
+
+    Route::get('/seats/by-room/{id}', [SeatController::class, 'getSeatsByRoom'])->name('seats.by.room');
+
+
+
 
 
 

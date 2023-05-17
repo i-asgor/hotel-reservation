@@ -112,4 +112,15 @@ class BookingController extends Controller
     // }
 
 
+
+    public function getSeats($id)
+    {
+        $room = Room::findOrFail($id);
+        $seats = $room->seats()->get();
+        dd($seats);
+        return response()->json($seats);
+    }
+
+
+
 }
