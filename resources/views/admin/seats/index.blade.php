@@ -30,6 +30,9 @@
                             <th>Name</th>
                             <th>Description </th>
                             <th>Seat Price</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Search</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -42,7 +45,26 @@
                             <td>{{$seat->name}}</td> 
                             <td>{{$seat->description}}</td> 
                             <td>{{$seat->price}}</td> 
+
+                                <form action="{{ route('seats.check-availability', ['id' => $seat->id]) }}" method="GET">
+                                  <td>
+                                    {{-- <label for="start_date">Start Date:</label> --}}
+                                    <input type="date" id="start_date" name="start_date" required>
+                                  </td>
+                                  <td>
+                                    {{-- <label for="end_date">End Date:</label> --}}
+                                    <input type="date" id="end_date" name="end_date" required>
+                                  </td>
+                                    
+                                    
+                                    <td>
+                                      <button type="submit" class="btn btn-primary">Check Availability</button>
+                                    </td>
+                                </form>   
                             <td>
+                                {{-- <a href="{{ route('seats.check-availability', $seat->id) }}">Check Availability</a> --}}
+                                {{-- <a href="{{ route('seats.check-availability', ['id' => $seat->id, 'created_at' => $startDate, 'updated_at' => $endDate]) }}">Check Availability</a> --}}                           
+
                                 <a href="{{route('seats.edit',$seat->id)}}" class="btn btn-primary"><i class="fa fa-pen"></i></a>
                                 <a href="" class="btn btn-danger" data-href="{{route('seats.delete',$seat->id)}}" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash"></i></a>
                             </td>

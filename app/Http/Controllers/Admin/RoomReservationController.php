@@ -59,11 +59,33 @@ class RoomReservationController extends Controller
         ]);
     }
 
-    public function show(RoomReservation $reservation)
+
+    public function storeBook(Request $request)
     {
-        return view('room_reservations.show', compact('reservation'));
+        $validatedData = $request->validate([
+            'check_in_date' => 'required|date',
+            'check_out_date' => 'required|date|after:check_in_date',
+            'guest_name' => 'required',
+            'guest_email' => 'required|email',
+        ]);
+
+        // Create a new instance of RoomReservation
+        $reservation = new RoomReservation();
+        // Set the attributes of the reservation
+        $reservation->check_in_date = $validatedData['check_in_date'];
+        $reservation->check_out_date = $validatedData['check_out_date'];
+        $reservation->guest_name = $validatedData['guest_name'];
+        $reservation->guest_email = $validatedData['guest_email'];
+    //    dd($reservation);
+
+        // Save the reservation to the database
+        $reservation->save();
+
+        // Redirect the user to a success page or any other desired action
+        return redirect()->route('room_reservations')->with('success', 'Reservation created successfully!');
     }
 
+    
     public function edit($id)
     {
         $reservations = RoomReservation::findOrFail($id);
@@ -88,33 +110,6 @@ class RoomReservationController extends Controller
         return redirect()->route('room_reservations.index');
     }
 
-
-    public function getAvailableSeats(Request $request)
-{
-    $validatedData = $request->validate([
-        'room_id' => 'required|exists:rooms,id',
-        'check_in_date' => 'required|date',
-        'check_out_date' => 'required|date|after:check_in_date',
-    ]);
-
-    $room = Room::findOrFail($validatedData['room_id']);
-
-    $availableSeats = $room->seats()
-        ->whereDoesntHave('reservations', function ($query) use ($validatedData) {
-            $query->where(function ($query) use ($validatedData) {
-                $query->where('check_in_date', '<', $validatedData['check_out_date'])
-                    ->where('check_out_date', '>', $validatedData['check_in_date']);
-            })->orWhere(function ($query) use ($validatedData) {
-                $query->where('check_in_date', '>=', $validatedData['check_in_date'])
-                    ->where('check_in_date', '<', $validatedData['check_out_date']);
-            })->orWhere(function ($query) use ($validatedData) {
-                $query->where('check_out_date', '>', $validatedData['check_in_date'])
-                    ->where('check_out_date', '<=', $validatedData['check_out_date']);
-            });
-        })->get();
-
-    return response()->json($availableSeats);
-}
 
     
 }

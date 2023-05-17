@@ -36,12 +36,18 @@ class Room extends Model
     //                 ->withTimestamps();
     // }
 
+    // public function reservations()
+    // {
+    //     return $this->belongsToMany(RoomReservation::class)
+    //                 ->withPivot('price')
+    //                 ->withTimestamps();
+    // }
+
     public function reservations()
     {
-        return $this->belongsToMany(RoomReservation::class)
-                    ->withPivot('price')
-                    ->withTimestamps();
+        return $this->belongsToMany(RoomReservation::class, 'room_reservation_rooms')->withPivot('quantity')->withTimestamps();
     }
+
 
 
     protected $fillable = [

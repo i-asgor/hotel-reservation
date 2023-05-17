@@ -21,22 +21,12 @@
      <section class="content-header">
         <div class="container-fluid">
           <div class="row mb-2">
-            <form method="GET" action="{{ route('rooms.available') }}">
-              <div class="form-group">
-                  <label for="check_in_date">Check-in date</label>
-                  <input type="date" name="check_in_date" id="check_in_date" class="form-control">
-              </div>
-              <div class="form-group">
-                  <label for="check_out_date">Check-out date</label>
-                  <input type="date" name="check_out_date" id="check_out_date" class="form-control">
-              </div>
-              <button type="submit" class="btn btn-primary">Search</button>
-          </form>
-          
+            {{--    --}}
           </div>
         </div><!-- /.container-fluid -->
       </section>
-  
+
+       
       <!-- Main content -->
       <section class="content">
         <div class="container-fluid">
@@ -69,6 +59,7 @@
                             </td> 
                             <td>
                                 <a href="{{ route('rooms.seats.index', $room->id) }}" class="btn btn-primary">{{ __('View Seat') }}</a>
+                                
                                 <a href="{{ route('seats.create', $room->id) }}" class="btn btn-primary">{{ __('Add Seat') }}</a>
                                 <a href="{{route('rooms.edit',$room->id)}}" class="btn btn-primary"><i class="fa fa-pen"></i></a>
                                 <a href="" class="btn btn-danger" data-href="{{route('rooms.delete',$room->id)}}" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash"></i></a>

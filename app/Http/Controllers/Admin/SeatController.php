@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Room;
 use App\Models\Seat;
+use App\Models\RoomReservationSeat;
 
 class SeatController extends Controller
 {
@@ -103,4 +104,50 @@ class SeatController extends Controller
         }
         return $html;
     }
+
+
+
+    // public function checkAvailability($id, Request $request)
+    // {
+    //     $seat = Seat::findOrFail($id);
+
+    //     $startDate = $request->input('start_date');
+    //     $endDate = $request->input('end_date');
+    
+    //     // Check if the seat is booked for the specified date range
+    //     $isBooked = SeatReservation::where('seat_id', $seat->id)
+    //         ->where(function ($query) use ($startDate, $endDate) {
+    //             $query->where(function ($query) use ($startDate, $endDate) {
+    //                 $query->where('created_at', '<=', $startDate)
+    //                     ->where('updated_at', '>=', $startDate);
+    //             })->orWhere(function ($query) use ($startDate, $endDate) {
+    //                 $query->where('created_at', '<=', $endDate)
+    //                     ->where('updated_at', '>=', $endDate);
+    //             })->orWhere(function ($query) use ($startDate, $endDate) {
+    //                 $query->where('created_at', '>=', $startDate)
+    //                     ->where('updated_at', '<=', $endDate);
+    //             });
+    //         })
+    //         ->exists();
+    
+    //     return view('seats.check-availability', compact('seat', 'startDate', 'endDate', 'isBooked'));
+    // }
+
+    public function checkAvailability($id, Request $request)
+    {
+        $seat = Seat::findOrFail($id);
+        
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        
+        // Check if the seat is available for the specified date range
+        $isAvailable = !$seat->reservations()->where(function ($query) use ($startDate, $endDate) {
+            $query->where('check_in_date', '<=', $endDate)
+                ->where('check_out_date', '>=', $startDate);
+        })->exists();
+        
+        return view('admin.seats.check-availability', compact('seat', 'startDate', 'endDate', 'isAvailable'));
+    }
+
+
 }

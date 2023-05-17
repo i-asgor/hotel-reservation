@@ -13,8 +13,14 @@ class Seat extends Model
 
     protected $fillable = ['room_id', 'name', 'description', 'price', 'image'];
 
+    // public function reservations()
+    // {
+    //     return $this->belongsToMany(SeatReservation::class)->withPivot('price');
+    // }
+
     public function reservations()
     {
-        return $this->belongsToMany(SeatReservation::class)->withPivot('price');
+        return $this->belongsToMany(RoomReservation::class, 'room_reservation_seats')->withPivot('quantity')->withTimestamps();
     }
+
 }

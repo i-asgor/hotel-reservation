@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('room_reservation_id');
             $table->unsignedBigInteger('seat_id');
             $table->decimal('price', 10, 2);
+            $table->integer('quantity')->default(1);
             $table->string('status')->nullable();
             $table->timestamps();
 

@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-3">
               <ol class="breadcrumb float-sm-right">
-                <a href="{{ route('rooms.seats.available', ['room_id' => $room->id]) }}">View available seats</a>
+                {{-- <a href="{{ route('rooms.seats.available', ['room_id' => $room->id]) }}">View available seats</a> --}}
               </ol>
             </div>
             <div class="col-sm-3">

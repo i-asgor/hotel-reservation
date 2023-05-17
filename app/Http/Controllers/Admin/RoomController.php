@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Room;
 use App\Models\Seat;
+use Illuminate\Support\Facades\DB;
+
 
 class RoomController extends Controller
 {
@@ -15,10 +17,27 @@ class RoomController extends Controller
         return view('admin.rooms.index', compact('rooms'));
     }
 
-    public function show($id)
+    public function show(Room $room)
     {
-        $room = Room::findOrFail($id);
-        return view('admin.rooms.show', compact('room'));
+        $isAvailable = $this->isRoomAvailable($room);
+
+        return view('admin.rooms.show', compact('room', 'isAvailable'));
+    }
+
+    private function isRoomAvailable(Room $room)
+    {
+        $checkInDate = now()->format('Y-m-d');
+        $checkOutDate = now()->addDays(1)->format('Y-m-d');
+
+        $reservationCount = DB::table('room_reservations')
+            ->where('room_id', $room->id)
+            ->where(function ($query) use ($checkInDate, $checkOutDate) {
+                $query->where('check_in_date', '<=', $checkOutDate)
+                    ->where('check_out_date', '>=', $checkInDate);
+            })
+            ->count();
+
+        return $reservationCount == 0;
     }
 
     public function create()
@@ -47,30 +66,13 @@ class RoomController extends Controller
     }
 
 
-    public function availableRooms(Request $request)
-{
-    $validatedData = $request->validate([
-        'check_in_date' => 'required|date',
-        'check_out_date' => 'required|date|after:check_in_date',
-    ]);
+    // public function checkReservations($roomId)
+    // {
+    //     $room = Room::findOrFail($roomId);
+    //     $reservations = $room->reservations()->where('status', 'booked')->get();
 
-    $checkInDate = $validatedData['check_in_date'];
-    $checkOutDate = $validatedData['check_out_date'];
+    //     return view('admin.rooms.reservations', compact('room', 'reservations'));
+    // }
 
-    $availableRooms = Room::whereDoesntHave('reservations', function ($query) use ($checkInDate, $checkOutDate) {
-        $query->where(function ($query) use ($checkInDate, $checkOutDate) {
-            $query->where('check_in_date', '<', $checkOutDate)
-                ->where('check_out_date', '>', $checkInDate);
-        })->orWhere(function ($query) use ($checkInDate, $checkOutDate) {
-            $query->where('check_in_date', '>=', $checkInDate)
-                ->where('check_in_date', '<', $checkOutDate);
-        })->orWhere(function ($query) use ($checkInDate, $checkOutDate) {
-            $query->where('check_out_date', '>', $checkInDate)
-                ->where('check_out_date', '<=', $checkOutDate);
-        });
-    })->get();
-
-    return view('admin.rooms.available', compact('availableRooms', 'checkInDate', 'checkOutDate'));
-}
 
 }

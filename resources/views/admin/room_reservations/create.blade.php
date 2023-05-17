@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Make a Booking</h1>
 
-        <form method="POST" action="{{ route('booking.store') }}">
+        <form method="POST" action="{{ route('room_reservations.store') }}">
             @csrf
 
             <div class="form-group">
