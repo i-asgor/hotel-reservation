@@ -37,9 +37,11 @@
                         <tr>
                             <th>Sl</th>
                             <th>Name</th>
-                            <th>Description </th>
-                            <th>Room Capacity</th>
-                            <th>Room Price</th>
+                            <th>Capacity</th>
+                            <th>Price</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Search</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -50,17 +52,33 @@
                             
 
                             <td>{{$room->name}}</td> 
-                            <td>{{$room->description}}</td> 
                             <td>{{ $room->seats_count }}</td> 
                             <td>
                                 @if ($room->seats->isNotEmpty())
                                     {{ $room->seats->sum('price') }}
                                 @endif  
                             </td> 
+                            <form action="{{ route('rooms.check-availability', ['id' => $room->id]) }}" method="GET">
+                              <td>
+                                {{-- <label for="start_date">Start Date:</label> --}}
+                                <input type="date" id="start_date" name="start_date" required>
+                              </td>
+                              <td>
+                                {{-- <label for="end_date">End Date:</label> --}}
+                                <input type="date" id="end_date" name="end_date" required>
+                              </td>
+                              <td>
+                                <button type="submit" class="btn btn-primary">Check Availability</button>
+                              </td>
+                                
+                                
+                                
+                            </form>
+                          
                             <td>
                                 <a href="{{ route('rooms.seats.index', $room->id) }}" class="btn btn-primary">{{ __('View Seat') }}</a>
                                 
-                                <a href="{{ route('seats.create', $room->id) }}" class="btn btn-primary">{{ __('Add Seat') }}</a>
+                                {{-- <a href="{{ route('seats.create', $room->id) }}" class="btn btn-primary"><i class="fa fa-plus"></i>{{ __('Seat') }}</a> --}}
                                 <a href="{{route('rooms.edit',$room->id)}}" class="btn btn-primary"><i class="fa fa-pen"></i></a>
                                 <a href="" class="btn btn-danger" data-href="{{route('rooms.delete',$room->id)}}" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash"></i></a>
                             </td>

@@ -75,4 +75,22 @@ class RoomController extends Controller
     // }
 
 
+    public function checkAvailability($id, Request $request)
+    {
+        $room = Room::findOrFail($id);
+        
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        
+        // Check if the room is available for the specified date range
+        $isAvailable = !$room->reservations()->where(function ($query) use ($startDate, $endDate) {
+            $query->where('check_in_date', '<=', $endDate)
+                ->where('check_out_date', '>=', $startDate);
+        })->exists();
+        
+        return view('admin.rooms.check-availability', compact('room', 'startDate', 'endDate', 'isAvailable'));
+    }
+
+
+
 }

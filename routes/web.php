@@ -72,6 +72,10 @@ Route::get('/', function () {
     Route::get('/seats/{id}/check-availability', [SeatController::class, 'checkAvailability'])->name('seats.check-availability');
 
 
+    Route::get('/rooms/{id}/check-availability', [RoomController::class, 'checkAvailability'])->name('rooms.check-availability');
+
+
+
 
 
   
