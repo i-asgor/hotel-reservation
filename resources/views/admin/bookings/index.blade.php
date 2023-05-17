@@ -22,6 +22,29 @@
           </div>
         </div><!-- /.container-fluid -->
       </section>
+
+
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+          <h2>All Rooms</h2>
+          <ul>
+              @foreach($rooms as $room)
+                  <li>{{ $room->name }}</li>
+              @endforeach
+          </ul>
+          <hr>
+          <form action="{{ route('rooms.search') }}" method="POST">
+              @csrf
+              <label for="check_in_date">Check-in Date:</label>
+              <input type="date" name="check_in_date" required>
+              <label for="check_out_date">Check-out Date:</label>
+              <input type="date" name="check_out_date" required>
+              <button type="submit">Search</button>
+          </form>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
   
       <!-- Main content -->
       <section class="content">

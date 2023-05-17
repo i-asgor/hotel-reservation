@@ -16,7 +16,8 @@ class BookingController extends Controller
     {
         // $reservations = RoomReservation::with(['rooms', 'seats'])->get();
         $reservations = RoomReservation::latest()->paginate(10);
-        return view('admin.bookings.index', compact('reservations'));
+        $rooms = Room::withCount('seats')->latest()->paginate(10);
+        return view('admin.bookings.index', compact('reservations','rooms'));
     }
 
 
@@ -44,7 +45,7 @@ class BookingController extends Controller
         $validatedData = $request->validate([
             'room_id.*' => 'required|exists:rooms,id',
             'seat_id.*' => 'nullable|exists:seats,id',
-            'quantity' => 'required|integer|min:1',
+            // 'quantity' => 'required|integer|min:1',
             'check_in_date' => 'required|date',
             'check_out_date' => 'required|date|after:check_in_date',
             'guest_name' => 'required|string|max:255',

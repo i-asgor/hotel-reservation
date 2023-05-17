@@ -80,6 +80,12 @@ Route::get('/', function () {
 
 
 
+    Route::get('/rooms1', [RoomController::class, 'index'])->name('rooms.index');
+    Route::post('/rooms/search', [RoomController::class, 'search'])->name('rooms.search');
+
+
+
+
 
 
 

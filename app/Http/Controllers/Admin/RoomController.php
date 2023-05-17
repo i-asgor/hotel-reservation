@@ -17,6 +17,33 @@ class RoomController extends Controller
         return view('admin.rooms.index', compact('rooms'));
     }
 
+
+    public function search(Request $request)
+    {
+        $checkInDate = $request->input('check_in_date');
+        $checkOutDate = $request->input('check_out_date');
+        $rooms = Room::all();
+        $seats = Seat::all();
+        
+        // Query to find available rooms within the specified date range
+        $availableRooms = Room::whereDoesntHave('reservations', function ($query) use ($checkInDate, $checkOutDate) {
+            $query->where(function ($query) use ($checkInDate, $checkOutDate) {
+                $query->where('check_in_date', '<=', $checkOutDate)
+                    ->where('check_out_date', '>=', $checkInDate);
+            });
+        })->get();
+
+        $availableSeats = Seat::whereDoesntHave('reservations', function ($query) use ($checkInDate, $checkOutDate) {
+            $query->where(function ($query) use ($checkInDate, $checkOutDate) {
+                $query->where('check_in_date', '<=', $checkOutDate)
+                    ->where('check_out_date', '>=', $checkInDate);
+            });
+        })->get();
+        
+        
+        return view('admin.bookings.create', compact('availableRooms','availableSeats', 'checkInDate', 'checkOutDate','rooms', 'seats'));
+    }
+
     public function show(Room $room)
     {
         $isAvailable = $this->isRoomAvailable($room);

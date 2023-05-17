@@ -11,7 +11,7 @@
                 <label for="room_id">Select Room(s)</label>
                 <select class="form-control select2" id="room_id" name="room_id[]" multiple>
                     <option value="" disabled>Select Room</option>
-                    @foreach($rooms as $room)
+                    @foreach($availableRooms  as $room)
                         <option value="{{ $room->id }}">{{ $room->name }}</option>
                     @endforeach
                 </select>
@@ -21,25 +21,25 @@
                 <label for="seat_id">Select Seat(s)</label>
                 <select class="form-control select2" id="seat_id" name="seat_id[]" multiple>
                     <option value="" disabled>Select Seat</option>
-                    @foreach($seats as $seat)
+                    @foreach($availableSeats as $seat)
                         <option value="{{ $seat->id }}">{{ $seat->name }}</option>
                     @endforeach
                 </select>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="quantity">Quantity</label>
                 <input type="number" name="quantity" id="quantity" class="form-control" min="1">
-            </div>
+            </div> -->
 
             <div class="form-group">
                 <label for="check_in_date">Check-in Date</label>
-                <input type="date" name="check_in_date" id="check_in_date" class="form-control">
+                <input type="date" name="check_in_date" id="check_in_date" value="{{ $checkInDate }}" readonly class="form-control">
             </div>
 
             <div class="form-group">
                 <label for="check_out_date">Check-out Date</label>
-                <input type="date" name="check_out_date" id="check_out_date" class="form-control">
+                <input type="date" name="check_out_date" id="check_out_date" value="{{ $checkOutDate }}" readonly class="form-control">
             </div>
 
             <div class="form-group">
