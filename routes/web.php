@@ -76,6 +76,11 @@ Route::get('/', function () {
 
 
 
+    Route::post('/check-availability', [BookingController::class, 'checkAvailability'])->name('booking.checkAvailability');
+
+
+
+
 
 
   

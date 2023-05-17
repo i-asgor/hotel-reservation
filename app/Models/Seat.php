@@ -18,6 +18,12 @@ class Seat extends Model
     //     return $this->belongsToMany(SeatReservation::class)->withPivot('price');
     // }
 
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+
     public function reservations()
     {
         return $this->belongsToMany(RoomReservation::class, 'room_reservation_seats')->withPivot('quantity')->withTimestamps();

@@ -18,8 +18,11 @@ class RoomReservationController extends Controller
 
     public function create()
     {
-        $rooms = Room::get();
-        $seats = Seat::get();
+        // $rooms = Room::get();
+        // $seats = Seat::get();
+        // $rooms = Room::orderBy('id','DESC')->paginate();
+        $rooms = Room::with('seats')->get()->paginate();
+        $seats = Seat::where('room_id',id)->get();
         return view('admin.room_reservations.create', compact('rooms','seats'));
     }
 

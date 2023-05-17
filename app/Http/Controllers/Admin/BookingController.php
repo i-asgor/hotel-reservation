@@ -50,6 +50,7 @@ class BookingController extends Controller
             'guest_name' => 'required|string|max:255',
             'guest_email' => 'required|email|max:255',
         ]);
+        
 
         $reservation = new RoomReservation();
         $reservation->room_id = json_encode($validatedData['room_id']);      

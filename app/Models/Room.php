@@ -9,6 +9,11 @@ class Room extends Model
 {
     use HasFactory;
 
+    public function seat()
+    {
+        return $this->belongsTo('App\Models\Seat','room_id');
+    }
+
     public function seats()
     {
         return $this->hasMany(Seat::class);
