@@ -55,7 +55,9 @@
                             <td>
                               {{-- {{ $reservation->seats()->count() * ($reservation->room->price ?? 0) }} --}}
                               {{-- {{ $reservation->seats()->count() * optional($reservation->room)->price }} --}}
-                              {{ $reservation->room ? $reservation->room->price : 'N/A' }}
+                              {{-- {{ $reservation->room ? $reservation->room->price : 'N/A' }} --}}
+                              {{-- {{ $reservation->getTotalPrice() }} --}}
+                              {{var_dump($reservation->seat)}}
                             </td> 
                             <td>{{$reservation->check_in_date}}</td> 
                             <td>{{$reservation->check_out_date}}</td> 

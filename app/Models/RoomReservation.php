@@ -61,6 +61,17 @@ class RoomReservation extends Model
     }
 
 
+    public function getTotalPrice()
+    {
+        $totalSeats = $this->seats()->count();
+        $pricePerSeat = $this->room->price;
+        $totalPrice = $totalSeats * $pricePerSeat;
+
+        return $totalPrice;
+    }
+
+
+
     protected $appends = ['total_price'];
 
 
