@@ -112,8 +112,21 @@
       headerToolbar: {
         left  : 'prev,next today',
         center: 'title',
-        right : 'dayGridMonth,timeGridWeek,timeGridDay'
+        right : 'threeMonth,sixMonth,dayGridMonth,timeGridWeek,timeGridDay'
       },
+      views: {
+                threeMonth: {
+                    type: 'month',
+                    duration: { months: 3 },
+                    buttonText: '3 Months'
+                },
+                sixMonth: {
+                    type: 'month',
+                    duration: { months: 6 },
+                    buttonText: '6 Months'
+                }
+            },
+      views: ['threeMonth', 'sixMonth'],
       themeSystem: 'bootstrap',
       //Random default events
       events: [
