@@ -94,6 +94,11 @@ Route::get('/', function () {
     Route::get('/calendar', [CalendarController::class, 'index'])
     ->name('availability.events');
 
+    Route::get('/reservations/events', [CalendarController::class, 'getReservationEvents'])
+    ->name('reservations.events');
+
+    Route::get('/reservation/{id}', 'CalendarController@show')->name('reservation.show');
+
 
 
 

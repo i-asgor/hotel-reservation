@@ -77,7 +77,6 @@
                               {{ $reservation->totalPrice() }}
                               {{-- {{ $reservation->room ? $reservation->room->price : 'N/A' }} --}}
                               {{-- {{ $reservation->getTotalPrice() }} --}}
-                              {{var_dump($reservation->seat)}}
                             </td> 
                             <td>{{$reservation->check_in_date}}</td> 
                             <td>{{$reservation->check_out_date}}</td> 
