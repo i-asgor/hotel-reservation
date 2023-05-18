@@ -6,19 +6,37 @@
      <section class="content-header">
         <div class="container-fluid">
           <div class="row mb-2">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <h1 class="tx-gray-800 tx-uppercase tx-bold tx-14 mg-b-10">Room Reservation List</h1>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-8">
               <ol class="breadcrumb float-sm-right">
-                {{-- <a href="{{ route('rooms.seats.available', ['room_id' => $room->id]) }}">View available seats</a> --}}
+              <form action="{{ route('rooms.search') }}" method="POST">
+                  @csrf
+                  <label for="check_in_date">Check-in Date:</label>
+                  <input type="date" name="check_in_date" required>
+                  <label for="check_out_date">Check-out Date:</label>
+                  <input type="date" name="check_out_date" required>
+                  <button type="submit"  class="btn btn-primary">Room Reservation Search</button>
+              </form>
+                <!-- <a href="{{ route('booking.create') }}" class="btn btn-primary">Add Room Reservation</a> -->
               </ol>
             </div>
-            <div class="col-sm-3">
-              <ol class="breadcrumb float-sm-right">
-                <a href="{{ route('booking.create') }}" class="btn btn-primary">Add Room Reservation</a>
-              </ol>
-            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+          <h2>All Rooms</h2>
+          <ul>
+              @foreach($rooms as $room)
+                  <li>{{ $room->name }}</li>
+              @endforeach
+          </ul>
+          <hr>          
           </div>
         </div><!-- /.container-fluid -->
       </section>
@@ -55,6 +73,8 @@
                             <td>
                               {{-- {{ $reservation->seats()->count() * ($reservation->room->price ?? 0) }} --}}
                               {{-- {{ $reservation->seats()->count() * optional($reservation->room)->price }} --}}
+                              <!-- {{ $reservation->room ? $reservation->room->price : 'N/A' }} -->
+                              {{ $reservation->totalPrice() }}
                               {{-- {{ $reservation->room ? $reservation->room->price : 'N/A' }} --}}
                               {{-- {{ $reservation->getTotalPrice() }} --}}
                               {{var_dump($reservation->seat)}}

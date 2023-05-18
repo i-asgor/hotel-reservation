@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Room;
 use App\Models\Seat;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class RoomController extends Controller
@@ -15,6 +16,33 @@ class RoomController extends Controller
     {
         $rooms = Room::withCount('seats')->latest()->paginate(10);
         return view('admin.rooms.index', compact('rooms'));
+    }
+
+
+    public function search(Request $request)
+    {
+        $checkInDate = $request->input('check_in_date');
+        $checkOutDate = $request->input('check_out_date');
+        $rooms = Room::all();
+        $seats = Seat::all();
+        
+        // Query to find available rooms within the specified date range
+        $availableRooms = Room::whereDoesntHave('reservations', function ($query) use ($checkInDate, $checkOutDate) {
+            $query->where(function ($query) use ($checkInDate, $checkOutDate) {
+                $query->where('check_in_date', '<=', $checkOutDate)
+                    ->where('check_out_date', '>=', $checkInDate);
+            });
+        })->get();
+
+        $availableSeats = Seat::whereDoesntHave('reservations', function ($query) use ($checkInDate, $checkOutDate) {
+            $query->where(function ($query) use ($checkInDate, $checkOutDate) {
+                $query->where('check_in_date', '<=', $checkOutDate)
+                    ->where('check_out_date', '>=', $checkInDate);
+            });
+        })->get();
+        
+        
+        return view('admin.bookings.create', compact('availableRooms','availableSeats', 'checkInDate', 'checkOutDate','rooms', 'seats'));
     }
 
     public function show(Room $room)
@@ -90,6 +118,36 @@ class RoomController extends Controller
         
         return view('admin.rooms.check-availability', compact('room', 'startDate', 'endDate', 'isAvailable'));
     }
+
+
+
+    public function getRoomAvailability()
+    {
+        $rooms = Room::all();
+
+        $events = [];
+
+        foreach ($rooms as $room) {
+            // Retrieve the availability information for each room and format it as an event
+            // You can customize this logic based on how you store the availability data in your database
+
+            $availability = $room->availability; // Assuming you have a relationship to retrieve the availability
+
+            foreach ($availability as $availabilityDate) {
+                $event = [
+                    'title' => $room->name,
+                    'start' => $availabilityDate->start_date->toDateString(),
+                    'end' => $availabilityDate->end_date->toDateString(),
+                ];
+
+                $events[] = $event;
+            }
+        }
+
+        return response()->json($events);
+    }
+
+    
 
 
 

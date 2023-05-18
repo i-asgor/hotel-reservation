@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\Admin\RoomReservationController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\SeatReservationController;
+use App\Http\Controllers\Admin\CalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,9 @@ Route::get('/', function () {
  Route::put('/seats/{id}', [SeatController::class, 'update'])->name('seats.update');
  Route::delete('/seats/{id}', [SeatController::class, 'destroy'])->name('seats.delete');
 
+ Route::get('/seats/{id}', [SeatController::class, 'show']);
+
+
 
   // Rooms Reservation
   Route::get('/room_reservations', [RoomReservationController::class, 'index'])->name('room_reservations');
@@ -77,6 +81,26 @@ Route::get('/', function () {
 
 
     Route::post('/check-availability', [BookingController::class, 'checkAvailability'])->name('booking.checkAvailability');
+
+
+
+    Route::get('/rooms1', [RoomController::class, 'index'])->name('rooms.index');
+    Route::post('/rooms/search', [RoomController::class, 'search'])->name('rooms.search');
+  
+
+    Route::get('/seats/by-room/{id}', [SeatController::class, 'getSeatsByRoom'])->name('seats.by.room');
+
+
+    Route::get('/calendar', [CalendarController::class, 'index'])
+    ->name('availability.events');
+
+
+
+
+
+
+
+
 
 
 

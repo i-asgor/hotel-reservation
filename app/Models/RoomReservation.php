@@ -47,16 +47,19 @@ class RoomReservation extends Model
             ->withPivot(['id', 'status'])
             ->withTimestamps();
     }
+    public function RoomReservationSeats()
+    {
+        return $this->hasMany(RoomReservationSeat::class, 'room_reservation_id','id');
+    }
 
-    public function getTotalPriceAttribute()
+    public function totalPrice()
     {
         $totalPrice = 0;
-        foreach ($this->rooms as $room) {
-            $totalPrice += $room->price;
-        }
-        foreach ($this->seats as $seat) {
+
+        foreach ($this->RoomReservationSeats as $seat) {
             $totalPrice += $seat->price;
         }
+
         return $totalPrice;
     }
 
