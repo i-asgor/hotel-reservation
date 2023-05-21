@@ -20,8 +20,11 @@ class CalendarController extends Controller
         $events = [];
 
         foreach ($reservations as $reservation) {
+            foreach ($reservation->seats as $seat) {
+                $seatNames[] = $seat->name;
+            }
             $event = [
-                'title' => $reservation->guest_name,
+                'title' => $reservation->guest_name. ' - Seat: ' .implode(', ', $seatNames),
                 'start' => $reservation->check_in_date,
                 'end' => $reservation->check_out_date,
                 'url' => route('reservation.show', $reservation->id),
